@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.springboot.web.model.Comment;
 import com.springboot.web.model.Post;
 import com.springboot.web.model.User;
 import com.springboot.web.repository.BlogRepository;
@@ -132,7 +133,51 @@ public class MyController {
 	
 		System.out.println(u_id);
 		return PostService.editPostImageService(file,post_id,u_id);
+
+	}
+	
+	@PutMapping("/like")
+	public int liked(@RequestBody Post post) {
+		System.out.println("liked"+post.getLike());
+		Optional<Post> p = postRepository.findById(post.getPost_id());
+		Post p1 = p.get();
+
+		System.out.println(post.getUser_id());
 		
-//		return "Image Received";
+		return PostService.UpdateLike(p1,post.getUser_id());
+	}
+	@PutMapping("/unlike")
+	public int unliked(@RequestBody Post post) {
+		System.out.println("unliked"+post.getLike());
+		Optional<Post> p = postRepository.findById(post.getPost_id());
+		Post p1 = p.get();
+		//p1.setUser_id(post.getUser_id());	
+		System.out.println(post.getUser_id());
+		PostService.deleteUser(p1,post.getUser_id());
+		return p1.getLike();
+	}
+	
+	@PutMapping("/saveComment/{comments}")
+	public String saveComment(@RequestBody Post p,@PathVariable String comments) {
+		System.out.println(p+" "+comments);
+		Comment c = new Comment();
+		c.setComment(comments);
+		User u = repository.findUserById(p.getUser_id());
+		c.setUserName(u.getName());
+		c.setUser_id(p.getUser_id());
+		Optional<Post> p1 = postRepository.findById(p.getPost_id());
+		Post pp = p1.get();
+		pp.setPost_id(p.getPost_id());
+		System.out.println(c);
+		PostService.saveComments(pp,c);	
+		return "ok";
+	}
+	
+	@GetMapping("fetchComment/{post_id}")
+	public List<Comment> fetchComment(@PathVariable String post_id){
+		Optional<Post> p1 = postRepository.findById(post_id);
+		Post p = p1.get();
+		
+		return PostService.fetchAllComment(p);
 	}
 }

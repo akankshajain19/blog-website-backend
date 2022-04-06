@@ -1,5 +1,6 @@
 package com.springboot.web.model;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -17,15 +18,16 @@ public class Post {
 	private String post_url;
 	private byte[] image;
 	private int like;
-
 	private int category;
 	private Date date;
-
+	private List<Comment> comments;
 	private String name;
 	private String user_id;
-
+	private List<Like> likeList;
+	
+	
 	public Post(String post_id, String post_title, String post_body, String post_desc, String post_url, byte[] image,
-			int like, int category, Date date, String name, String user_id) {
+			int like, int category, Date date, List<Comment> comments, String name, String user_id) {
 		super();
 		this.post_id = post_id;
 		this.post_title = post_title;
@@ -36,10 +38,9 @@ public class Post {
 		this.like = like;
 		this.category = category;
 		this.date = date;
-
+		this.comments = comments;
 		this.name = name;
 		this.user_id = user_id;
-		
 	}
 
 	public String getName() {
@@ -134,6 +135,30 @@ public class Post {
 		this.date = date;
 	}
 
+	public List<Comment> getComments() {
+		return comments;
+	}
 
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+	
+	
+	public List<Like> getLikeList() {
+		return likeList;
+	}
+
+	public void setLikeList(List<Like> likeList) {
+		this.likeList = likeList;
+	}
+
+	@Override
+	public String toString() {
+		return "Post [post_id=" + post_id + ", post_title=" + post_title + ", post_body=" + post_body + ", post_desc="
+				+ post_desc + ", post_url=" + post_url + ", like=" + like + ", category=" + category + ", date=" + date
+				+ ", comments=" + comments + ", name=" + name + ", user_id=" + user_id + ", likeList=" + likeList + "]";
+	}
+
+	
 
 }

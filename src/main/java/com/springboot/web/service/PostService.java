@@ -20,7 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.result.UpdateResult;
-
+import com.springboot.web.model.Comment;
+import com.springboot.web.model.Like;
 import com.springboot.web.model.Post;
 import com.springboot.web.model.User;
 import com.springboot.web.repository.BlogRepository;
@@ -112,6 +113,77 @@ public class PostService {
 		Date d = new Date();
 
 		return "Image Updated Sucessfully";
+	}
+	
+	
+	
+	public int UpdateLike(Post p,String u_id) {
+		Post p1=p;
+		p1.setLike(p.getLike()+1);
+			
+		List<Like> l1 = new ArrayList<Like>();
+		if(p1.getLikeList()!=null) {
+			l1.addAll(p1.getLikeList());
+		}
+		
+		l1.add(new Like(u_id,true));
+		System.out.println(l1);
+		p1.setLikeList(l1);
+		mongoTemplate.save(p1);
+		
+		return p1.getLike();
+	}
+		
+	public void deleteUser(Post p,String u_id) {
+		Post p1 = p;
+		List<Like> l1 = new ArrayList<Like>();
+		l1.addAll(p1.getLikeList());
+		ListIterator<Like> it = l1.listIterator();
+		//System.out.println(l1);
+		
+		try {
+		while(it.hasNext()) {
+			//System.out.println(it.next());
+			Like pp = (Like) it.next();
+			//System.out.println(pp);
+			if(pp.getUser_id().equals(u_id)) {
+				l1.remove(pp);
+				p1.setLike(p.getLike()-1);
+				System.out.println("deleted");
+				System.out.println(l1);
+			}
+			
+		}
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+		//System.out.println(l1);
+		p1.setLikeList(l1);
+		mongoTemplate.save(p1);
+	}
+
+
+	public void saveComments(Post pp, Comment c) {
+		Post p2 = pp;
+		Date d  = new Date();
+		c.setCdate(d);
+		List<Comment> l = new ArrayList<Comment>();
+		if(p2.getComments()!=null) {
+			l.addAll(p2.getComments());
+		}	
+		l.add(c);
+		System.out.println(l);
+		//System.out.println(pp);
+		p2.setComments(l);
+		mongoTemplate.save(p2);
+	}
+
+
+	public List<Comment> fetchAllComment(Post p) {
+		System.out.println(p.getComments());
+		List<Comment> l = new ArrayList<Comment>();
+		l.addAll(p.getComments());
+		return l;
 	}
 
 }
