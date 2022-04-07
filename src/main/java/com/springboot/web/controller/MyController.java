@@ -180,4 +180,21 @@ public class MyController {
 		
 		return PostService.fetchAllComment(p);
 	}
+	
+	@GetMapping("/allPost/{category}")
+	public List<Post> getAllPosts(@PathVariable String category) {
+		int c = Integer.parseInt(category);
+		
+//		System.out.println(category);
+		if(c == 1) {
+			return postRepository.findAll();
+		}
+		else {
+			return postRepository.findByCategory(c);
+		}
+		
+	}
+	
+	
+
 }

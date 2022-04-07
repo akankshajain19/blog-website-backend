@@ -17,6 +17,11 @@ public interface PostRepository extends MongoRepository<Post, String> {
 	Post findByUrlAndId(String post_url, String post_id);
 
 
+	
+
+	List<Post> findByCategory(int c);
+
+
 
 	
 
