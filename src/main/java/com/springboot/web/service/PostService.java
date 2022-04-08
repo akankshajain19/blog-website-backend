@@ -89,7 +89,6 @@ public class PostService {
 		p.setCategory(ca_id);
 		p.setPost_url(slug);
 		p.setPost_title(pTitle);
-		p.setLike(0);
 		p.setPost_id(post_id);
 		p.setUser_id(u_id);
 
