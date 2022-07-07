@@ -78,9 +78,6 @@ public class MyController {
 	@PostMapping("/login")
 	public User loginUser(@RequestBody User user) {
 		User u = repository.findByEmailAndPassword(user.getEmail(), user.getPassword());
-
-
-
 		return u;
 	}
 

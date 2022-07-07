@@ -181,7 +181,10 @@ public class PostService {
 	public List<Comment> fetchAllComment(Post p) {
 		System.out.println(p.getComments());
 		List<Comment> l = new ArrayList<Comment>();
-		l.addAll(p.getComments());
+		if(p.getComments()!=null) {
+			l.addAll(p.getComments());
+		}
+		
 		return l;
 	}
 
